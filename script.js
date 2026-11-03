@@ -2,24 +2,26 @@ const cells = document.querySelectorAll('.flex > div');
 const sumEl = document.getElementById('sum');
 const countEl = document.getElementById('count');
 
-let sum = 0;
-let count = 0;
+let sumAndCountState = {
+    sum: 0,
+    count: 0,
+    setSum(value) {
+        this.sum += value;
+    },
+    setCount(value) {
+        this.count += value;
+    }
+}
 
 cells.forEach(cell => {
     cell.addEventListener('click', () => {
         const value = Number(cell.textContent);
-
         const isSelected = cell.classList.toggle('selected');
 
-        if (isSelected) {
-            sum += value;
-            count += 1;
-        } else {
-            sum -= value;
-            count -= 1;
-        }
+        sumAndCountState.setSum(isSelected * value || -value);
+        sumAndCountState.setCount(isSelected || -1);
 
-        sumEl.textContent = sum;
-        countEl.textContent = count;
+        sumEl.textContent = sumAndCountState.sum;
+        countEl.textContent = sumAndCountState.count;
     });
 });
